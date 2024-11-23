@@ -122,7 +122,11 @@ class LeakyRelu:
         # Implement the forward pass of LeakyRelu activation function          #
         ########################################################################
 
-        pass
+        # Store input as cache for backward pass
+        cache = x
+        
+        # LeakyReLU forward: f(x) = x if x > 0, slope*x if x <= 0
+        outputs = np.maximum(x, self.slope * x)
 
         ########################################################################
         #                           END OF YOUR CODE                           #
@@ -139,7 +143,15 @@ class LeakyRelu:
         # Implement the backward pass of LeakyRelu activation function         #
         ########################################################################
 
-        pass
+        # Get the cached input
+        x = cache
+        
+        # LeakyReLU backward: f'(x) = 1 if x > 0, slope if x <= 0
+        dx = np.ones_like(x)
+        dx[x <= 0] = self.slope
+        
+        # Multiply by upstream gradient
+        dx = dx * dout
 
         ########################################################################
         #                           END OF YOUR CODE                           #
@@ -165,7 +177,12 @@ class Tanh:
         # Implement the forward pass of Tanh activation function               #
         ########################################################################
 
-        pass
+        # Compute tanh(x) = (e^x - e^-x) / (e^x + e^-x)
+        outputs = np.tanh(x)
+        
+        # Cache the outputs for backward pass
+        # We need this because derivative of tanh(x) = 1 - tanh^2(x)
+        cache = outputs
 
         ########################################################################
         #                           END OF YOUR CODE                           #
@@ -182,7 +199,14 @@ class Tanh:
         # Implement the backward pass of Tanh activation function              #
         ########################################################################
 
-        pass
+        # Get the cached tanh outputs
+        tanh_output = cache
+        
+        # Derivative of tanh(x) is 1 - tanh^2(x)
+        local_grad = 1 - tanh_output * tanh_output
+        
+        # Multiply by upstream gradient
+        dx = local_grad * dout
 
         ########################################################################
         #                           END OF YOUR CODE                           #
