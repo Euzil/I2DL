@@ -5,3 +5,5 @@
 /datasets/mnist
 /datasets/facial_keypoints
 /datasets/segmentation
+/datasets/transformerDatasets
+/exercise_11/models
